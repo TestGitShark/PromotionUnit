@@ -5,7 +5,17 @@ using System.Collections.Generic;
 ASSUMPTIONS
 1. Only one promotion per product
 2. On the shopping cart , one entry per product, and total count of the product
- 
+3. Unit price given for all the products
+TESTDATA
+The class DemoDataManager contains various functions to add sample data like
+ 1. Unit price for each product
+ 2. Sample shopping cart
+ 3. Multibuy promotions (eg. 3 A for 120)
+ 4. Duocombo promotions (eg. C and D for 45)
+
+UNITTEST
+Contains various tests for each of the functions also inline data
+
  */
 namespace PromotionUnit
 {

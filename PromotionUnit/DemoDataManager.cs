@@ -11,8 +11,8 @@ namespace PromotionUnit
             output.Add('A', 50);
             output.Add('B', 30);
             output.Add('C', 20);
-            output.Add('D', 10);
-            output.Add('E', 10);
+            output.Add('D', 15);
+            //output.Add('E', 10);
             return output;
         }
 
@@ -22,8 +22,8 @@ namespace PromotionUnit
             output.Add(new CartItem { ProductId = 'A', Count = 3 });
             output.Add(new CartItem { ProductId = 'B', Count = 5 });
             output.Add(new CartItem { ProductId = 'C', Count = 1 });
-            output.Add(new CartItem { ProductId = 'D', Count = 2 });
-            //output.Add(new CartItem { ProductId = 'E', Count = 1 });
+            output.Add(new CartItem { ProductId = 'D', Count = 1 });
+           // output.Add(new CartItem { ProductId = 'E', Count = 1 });
             return output;
         }
 
