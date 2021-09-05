@@ -40,6 +40,17 @@ namespace PromotionUnit
                         Console.WriteLine($"Price of {cartItem.Count } {cartItem.ProductId } after promotion - {cartItem.PriceAfterPromotion }");
 
                     }
+                    else if (IsDuoComboPromotionApplicable(cartItem, shoppingCart, dictionaryDuoComboPromotion))
+                    {
+
+                        Console.WriteLine($"DuoCombo promotion applicable for{cartItem.ProductId } ");
+                        DuoComboPromotion applicablePromotion = new DuoComboPromotion();
+                        applicablePromotion = dictionaryDuoComboPromotion[cartItem.ProductId];
+                        double unitPrice1 = dictionaryUnitPrice[cartItem.ProductId];
+                        double unitPrice2 = dictionaryUnitPrice[applicablePromotion.ProductIdTwo];
+                        double promotionalPrice = CalculateDuoComboPromotionalPrice(cartItem, shoppingCart, applicablePromotion, unitPrice1, unitPrice2);
+
+                    }
 
                 }
 
@@ -108,6 +119,41 @@ namespace PromotionUnit
             else
                 return false;
 
+        }
+
+
+        public static double CalculateDuoComboPromotionalPrice(CartItem currentCartItem, List<CartItem> shoppingCart, DuoComboPromotion duoComboPromotion,
+                                                        double unitPriceProduct1, double unitPriceProduct2)
+        {
+
+            //
+            int i = shoppingCart.FindIndex(x => x.ProductId == duoComboPromotion.ProductIdTwo);
+            double priceAfterPromotion = 0;
+            if (currentCartItem.Count == shoppingCart[i].Count)
+
+            {
+                priceAfterPromotion = currentCartItem.Count * duoComboPromotion.Price;
+                currentCartItem.PriceAfterPromotion = priceAfterPromotion;
+                shoppingCart[i].PromotionApplied = true;
+                shoppingCart[i].PriceAfterPromotion = 0; // combined price given to the other item
+            }
+            else if (currentCartItem.Count < shoppingCart[i].Count)
+            {
+                priceAfterPromotion = (currentCartItem.Count * duoComboPromotion.Price) + (shoppingCart[i].Count - currentCartItem.Count) * unitPriceProduct2;
+                currentCartItem.PriceAfterPromotion = currentCartItem.Count * duoComboPromotion.Price;
+                shoppingCart[i].PromotionApplied = true;
+                shoppingCart[i].PriceAfterPromotion = (shoppingCart[i].Count - currentCartItem.Count) * unitPriceProduct2;
+            }
+            else
+            {
+                priceAfterPromotion = (shoppingCart[i].Count * duoComboPromotion.Price) + (currentCartItem.Count - shoppingCart[i].Count) * unitPriceProduct1;
+
+                currentCartItem.PriceAfterPromotion = (shoppingCart[i].Count * duoComboPromotion.Price) + (currentCartItem.Count - shoppingCart[i].Count) * unitPriceProduct1;
+                shoppingCart[i].PromotionApplied = true;
+                shoppingCart[i].PriceAfterPromotion = 0;
+
+            }
+            return priceAfterPromotion;
         }
 
     }
