@@ -138,5 +138,45 @@ namespace PromotionUnit.Tests
 
             Assert.Equal(expectedResult, actualResult);
         }
+
+
+        [Theory]
+        [InlineData('C', 1, 'D', 1, 'C', 'D', 25, 20, 15, 25)]
+        [InlineData('C', 2, 'D', 2, 'C', 'D', 25, 20, 15, 50)]
+        [InlineData('C', 2, 'D', 3, 'C', 'D', 25, 20, 15, 65)]
+        [InlineData('C', 2, 'D', 1, 'C', 'D', 25, 20, 15, 45)]
+        public void CalculateDuoComboPromotionalPrice_ShouldCalculateComboPromotionalPrice(char cartProductId, int cartProductCount,
+                                                            char cartProductId2, int cartProductCount2,
+                                                            char promProductIdOne, char promoProductIdTwo,
+                                                            double promotionPrice, double unitPrice1, double unitPrice2, double expectedResult)
+        {
+
+            //Arrange
+
+            CartItem currentCartItem = new CartItem { ProductId = cartProductId, Count = cartProductCount };
+            CartItem secondCartItem = new CartItem { ProductId = cartProductId2, Count = cartProductCount2 };
+
+            //dummy shopping cart with 2 products for testing the duoPromotion
+            List<CartItem> shoppingCart = new List<CartItem>();
+            shoppingCart.Add(currentCartItem);
+            shoppingCart.Add(secondCartItem);
+
+            DuoComboPromotion comboPromotion = new DuoComboPromotion
+            {
+                ProductIdOne = promProductIdOne,
+                ProductIdTwo = promoProductIdTwo,
+                Price = promotionPrice
+            };
+
+            //Act
+
+            double actualResult = Program.CalculateDuoComboPromotionalPrice(currentCartItem, shoppingCart, comboPromotion, unitPrice1, unitPrice2);
+
+
+            //Assert
+
+            Assert.Equal(expectedResult, actualResult);
+
+        }
     }
 }
