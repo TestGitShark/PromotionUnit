@@ -52,5 +52,26 @@ namespace PromotionUnit.Tests
             //Assert
             Assert.Equal(expectedResult, actualResult);
         }
+
+
+        [Theory]
+        [InlineData('A', 4, 3, 120, 50, 170)]
+        [InlineData('A', 3, 3, 120, 50, 120)]
+        [InlineData('A', 2, 3, 120, 50, 100)]
+        public void CalculateMultibuyPromotionalPrice_ShouldCalculatePromotionalPrice(char productId, int cartProductCount,
+                                                              int promotionProductCount,
+                                                             double promotionProductPrice,
+                                                             double unitPrice, double expectedResult)
+        {
+            //Arrange
+            CartItem cartItem = new CartItem { ProductId = productId, Count = cartProductCount };
+            MultibuyPromotion multibuyPromotion = new MultibuyPromotion { Id = productId, Count = promotionProductCount, Price = promotionProductPrice, ActiveState = true };
+
+            //Act
+            double actualResult = Program.CalculateMultibuyPromotionalPrice(cartItem, multibuyPromotion, unitPrice);
+
+            //Assert
+            Assert.Equal(expectedResult, actualResult);
+        }
     }
 }

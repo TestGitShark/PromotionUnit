@@ -43,21 +43,44 @@ namespace PromotionUnit
 
         public static bool IsMultibuyPromotionApplicable(CartItem cartItem, Dictionary<char, MultibuyPromotion> dictionaryMultibuyPromotion)
         {
-            if (dictionaryMultibuyPromotion.ContainsKey(cartItem.ProductId))
-            {
-                MultibuyPromotion mp = new MultibuyPromotion();
-                mp = dictionaryMultibuyPromotion[cartItem.ProductId];
-                if (mp.ActiveState && cartItem.Count >= mp.Count)
+            try { 
+                    if (dictionaryMultibuyPromotion.ContainsKey(cartItem.ProductId))
+                    {
+                        MultibuyPromotion mp = new MultibuyPromotion();
+                        mp = dictionaryMultibuyPromotion[cartItem.ProductId];
+                        if (mp.ActiveState && cartItem.Count >= mp.Count)
 
-                    return true;
+                            return true;
 
-                else
+                        else
 
+                            return false;
+                    }
+                    else
+                        return false;
+                }
+                catch(Exception e)
+                {
+                    Console.WriteLine(e.Message);
                     return false;
-            }
-            else
-                return false;
+                }
+
 
         }
+
+
+        public static double CalculateMultibuyPromotionalPrice(CartItem cartItem, MultibuyPromotion multibuyPromotion, double unitPrice)
+
+        {
+
+            double priceAfterPromotion = (int)(cartItem.Count / multibuyPromotion.Count) * multibuyPromotion.Price +
+                        (cartItem.Count % multibuyPromotion.Count) * unitPrice;
+
+
+
+
+            return priceAfterPromotion;
+        }
+
     }
-}
+}  //{ }   []
