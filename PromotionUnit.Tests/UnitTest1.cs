@@ -73,5 +73,70 @@ namespace PromotionUnit.Tests
             //Assert
             Assert.Equal(expectedResult, actualResult);
         }
+
+        [Theory]
+        [InlineData('C', 2, 'D', 2, 'C', 'D', 25, true)]
+        [InlineData('C', 2, 'D', 1, 'C', 'D', 25, true)]
+        public void IsDuoComboPromotionApplicable_ReturnsTrue(char cartProductId, int cartProductCount,
+                                                              char cartProductId2, int cartProductCount2,
+                                                              char promProductIdOne, char promoProductIdTwo, double promotionPrice,
+                                                              bool promotionState)
+        {
+
+            //Arrange
+            bool expectedResult = true;
+            CartItem currentCartItem = new CartItem { ProductId = cartProductId, Count = cartProductCount };
+            CartItem secondCartItem = new CartItem { ProductId = cartProductId2, Count = cartProductCount2 };
+
+            //dummy shopping cart with 2 products for testing the duoPromotion
+            List<CartItem> shoppingCart = new List<CartItem>();
+            shoppingCart.Add(currentCartItem);
+            shoppingCart.Add(secondCartItem);
+
+
+            Dictionary<char, DuoComboPromotion> dictionaryDuComboPromotion = new Dictionary<char, DuoComboPromotion>();
+            dictionaryDuComboPromotion.Add(promProductIdOne, new DuoComboPromotion { ProductIdOne = promProductIdOne, ProductIdTwo = promoProductIdTwo, Price = promotionPrice, ActiveState = promotionState });
+
+
+            //Act
+            bool actualResult = Program.IsDuoComboPromotionApplicable(currentCartItem, shoppingCart, dictionaryDuComboPromotion);
+
+            //Assert
+
+            Assert.Equal(expectedResult, actualResult);
+        }
+
+        [Theory]
+        [InlineData('C', 2, 'D', 2, 'C', 'D', 25, false)]
+        [InlineData('C', 2, 'E', 1, 'C', 'D', 25, true)]
+        [InlineData('A', 2, 'E', 1, 'C', 'D', 25, true)]
+        public void IsDuoComboPromotionApplicable_ReturnsFalse(char cartProductId, int cartProductCount,
+                                                             char cartProductId2, int cartProductCount2,
+                                                             char promProductIdOne, char promoProductIdTwo, double promotionPrice,
+                                                             bool promotionState)
+        {
+
+            //Arrange
+            bool expectedResult = false;
+            CartItem currentCartItem = new CartItem { ProductId = cartProductId, Count = cartProductCount };
+            CartItem secondCartItem = new CartItem { ProductId = cartProductId2, Count = cartProductCount2 };
+
+            //dummy shopping cart with 2 products for testing the duoPromotion
+            List<CartItem> shoppingCart = new List<CartItem>();
+            shoppingCart.Add(currentCartItem);
+            shoppingCart.Add(secondCartItem);
+
+
+            Dictionary<char, DuoComboPromotion> dictionaryDuComboPromotion = new Dictionary<char, DuoComboPromotion>();
+            dictionaryDuComboPromotion.Add(promProductIdOne, new DuoComboPromotion { ProductIdOne = promProductIdOne, ProductIdTwo = promoProductIdTwo, Price = promotionPrice, ActiveState = promotionState });
+
+
+            //Act
+            bool actualResult = Program.IsDuoComboPromotionApplicable(currentCartItem, shoppingCart, dictionaryDuComboPromotion);
+
+            //Assert
+
+            Assert.Equal(expectedResult, actualResult);
+        }
     }
 }

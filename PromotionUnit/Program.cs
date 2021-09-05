@@ -27,9 +27,21 @@ namespace PromotionUnit
 
                     foreach (CartItem cartItem in shoppingCart)
                     {
-                        
+                    if (IsMultibuyPromotionApplicable(cartItem, dictionaryMultibuyPromotion))
+                    {
+
+                        MultibuyPromotion applicablePromotion = new MultibuyPromotion();
+                        applicablePromotion = dictionaryMultibuyPromotion[cartItem.ProductId];
+                        double unitPrice = dictionaryUnitPrice[cartItem.ProductId];
+                        cartItem.PriceAfterPromotion = CalculateMultibuyPromotionalPrice(cartItem, applicablePromotion, unitPrice);
+                        cartItem.PromotionApplied = true;
+
+                        Console.WriteLine($"Multibuy promotion applicable for{cartItem.ProductId } ");
+                        Console.WriteLine($"Price of {cartItem.Count } {cartItem.ProductId } after promotion - {cartItem.PriceAfterPromotion }");
 
                     }
+
+                }
 
                 }
 
@@ -80,6 +92,22 @@ namespace PromotionUnit
 
 
             return priceAfterPromotion;
+        }
+
+        public static bool IsDuoComboPromotionApplicable(CartItem currentItem, List<CartItem> shoppingCart, Dictionary<char, DuoComboPromotion> dictionaryDuoCombo)
+
+        {
+            //if there is an active promotion for the current item & 
+            if (dictionaryDuoCombo.ContainsKey(currentItem.ProductId) &&
+
+                dictionaryDuoCombo[currentItem.ProductId].ActiveState &&
+                // the combination item exists in the shopping cart
+                shoppingCart.Exists(x => x.ProductId == dictionaryDuoCombo[currentItem.ProductId].ProductIdTwo))
+
+                return true;
+            else
+                return false;
+
         }
 
     }
