@@ -196,5 +196,30 @@ namespace PromotionUnit.Tests
             Assert.Equal(expectedResult, actualResult);
 
         }
+
+
+        [Theory]
+        [InlineData('A', 120, 'B', 50, 'C', 10, 'D', 0, 180)]
+        public void CalculateTotalPrice_ShouldAddPricesAfterPromotion(char productId1, double price1,
+                                                                   char productId2, double price2,
+                                                                   char productId3, double price3,
+                                                                   char productId4, double price4,
+                                                                   double expectedValue
+                                                           )
+        {
+            //Arrange
+            List<CartItem> shoppingCart = new List<CartItem>();
+            shoppingCart.Add(new CartItem { ProductId = productId1, PriceAfterPromotion = price1 });
+            shoppingCart.Add(new CartItem { ProductId = productId2, PriceAfterPromotion = price2 });
+            shoppingCart.Add(new CartItem { ProductId = productId3, PriceAfterPromotion = price3 });
+            shoppingCart.Add(new CartItem { ProductId = productId4, PriceAfterPromotion = price4 });
+
+            //Act
+            double actualResult = Program.CalculateTotalPrice(shoppingCart);
+
+            //Assert
+
+            Assert.Equal(expectedValue, actualResult);
+        }
     }
 }

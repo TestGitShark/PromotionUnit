@@ -51,10 +51,19 @@ namespace PromotionUnit
                         double promotionalPrice = CalculateDuoComboPromotionalPrice(cartItem, shoppingCart, applicablePromotion, unitPrice1, unitPrice2);
 
                     }
+                    else
+
+                    {
+                        //price without any promotion
+                        double price = CalculatePriceWithoutPromotion(cartItem, dictionaryUnitPrice[cartItem.ProductId]);
+
+                    }
 
                 }
+                double totalPrice = CalculateTotalPrice(shoppingCart);
+                Console.WriteLine($"Totalprice -{ totalPrice} ");
 
-                }
+            }
 
                 catch (Exception e)
 
@@ -166,6 +175,18 @@ namespace PromotionUnit
                 cartItem.PriceAfterPromotion = cartItem.Count * unitPrice;
             }
             return cartItem.PriceAfterPromotion;
+        }
+
+        public static double CalculateTotalPrice(List<CartItem> shoppingCart)
+        {
+            double priceAfterPromotion = 0;
+
+
+            foreach (CartItem cartItem in shoppingCart)
+                priceAfterPromotion += cartItem.PriceAfterPromotion;
+
+            return priceAfterPromotion;
+
         }
 
     }
