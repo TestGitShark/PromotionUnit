@@ -178,5 +178,23 @@ namespace PromotionUnit.Tests
             Assert.Equal(expectedResult, actualResult);
 
         }
+
+        [Theory]
+        [InlineData('A', 5, 10, 50)]
+        public void CalculatePriceWithoutPromotion_ShouldCalculatePrice(char cartProductId, char cartProductCount,
+                                                                         double unitPrice, double expectedResult)
+        {
+            //Arrange
+            CartItem cartItem = new CartItem { ProductId = cartProductId, Count = cartProductCount };
+
+            //Act
+            double actualResult = Program.CalculatePriceWithoutPromotion(cartItem, unitPrice);
+
+
+            //Assert
+
+            Assert.Equal(expectedResult, actualResult);
+
+        }
     }
 }

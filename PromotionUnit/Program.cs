@@ -156,5 +156,17 @@ namespace PromotionUnit
             return priceAfterPromotion;
         }
 
+
+        public static double CalculatePriceWithoutPromotion(CartItem cartItem, double unitPrice)
+        {
+
+            if (!cartItem.PromotionApplied)
+            {
+
+                cartItem.PriceAfterPromotion = cartItem.Count * unitPrice;
+            }
+            return cartItem.PriceAfterPromotion;
+        }
+
     }
 }  //{ }   []
